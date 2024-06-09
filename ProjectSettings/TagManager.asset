@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Box
+  - Torch
+  - Candle
+  - Key
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Bones
+  - SolidObjects
+  - Player
+  - Interactable
+  - Torches
+  - Nesne
+  - Box
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 4187845569
+    locked: 0
+  - name: Foreground
+    uniqueID: 3650355801
+    locked: 0
+  - name: Bones
+    uniqueID: 2057616975
+    locked: 0
+  - name: Torches
+    uniqueID: 699873871
+    locked: 0
+  - name: Player
+    uniqueID: 526359087
+    locked: 0
+  - name: Foreground1
+    uniqueID: 2761407409
+    locked: 0

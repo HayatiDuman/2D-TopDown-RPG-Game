@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,8 +10,8 @@ public class PlayerController : MonoBehaviour
     private bool isMoving;
     private Vector2 input;
     private Animator animator;
-    public LayerMask solidObjectsLayer; // Çarpýþma kontrolü için katman
-    public LayerMask interactableLayer; // Etkileþim kontrolü için katman
+    public LayerMask solidObjectsLayer; // ï¿½arpï¿½ï¿½ma kontrolï¿½ iï¿½in katman
+    public LayerMask interactableLayer; // Etkileï¿½im kontrolï¿½ iï¿½in katman
     public LayerMask nesneLayer;
     public LayerMask boxLayer;
     public LayerMask enemyLayer;
@@ -39,6 +40,8 @@ public class PlayerController : MonoBehaviour
 
     public static PlayerController Ornek { get; private set; }
 
+    public GameObject restartScreen;
+
 
     private void Awake()
     {
@@ -50,7 +53,7 @@ public class PlayerController : MonoBehaviour
 
     private void BoxColliderAyarla(BoxCollider2D boxCollider)
     {
-        // BoxCollider boyutu ve offset ayarlarý
+        // BoxCollider boyutu ve offset ayarlarï¿½
         boxCollider.size = new Vector2(0.5f, 0.7f);
         boxCollider.offset = new Vector2(0f, -0.28f);
     }
@@ -80,35 +83,35 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("isMoving", isMoving);
 
-        //Etkileþime girme
+        //Etkileï¿½ime girme
         if (Input.GetKeyDown(KeyCode.Z))
             Etkilesim();
 
-        //Nesne taþýma
+        //Nesne taï¿½ï¿½ma
         if (basla && Input.GetKeyDown(KeyCode.E))
         {
             Tut();
             basla = false;
         }
-        //Nesne býrakma
+        //Nesne bï¿½rakma
         if (!basla && Input.GetKeyDown(KeyCode.R))
         {
             Birak();
             basla = true;
         }
-        //Þamdan yakma
+        //ï¿½amdan yakma
         if (mesaleTasiyor && Input.GetKeyDown(KeyCode.F))
         {
             MumYak();
         }
-        //Kutu pozisyonlarý doðruysa meþale görünür oldu.
+        //Kutu pozisyonlarï¿½ doï¿½ruysa meï¿½ale gï¿½rï¿½nï¿½r oldu.
         if (!gorunur && KutuPozisyonuKontrol())
         {
             gorunur = true;
-            Debug.Log("Meþale görünür oldu.");
+            Debug.Log("Meï¿½ale gï¿½rï¿½nï¿½r oldu.");
             torch.SetActive(true);
         }
-        //Þamdan odasýnýn kapýsý için þamdan kontrolleri
+        //ï¿½amdan odasï¿½nï¿½n kapï¿½sï¿½ iï¿½in ï¿½amdan kontrolleri
         if (CheckAllCandles())
         {
             kapi.KapiAc();
@@ -160,7 +163,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Nesne alma iþlemleri
+    // Nesne alma iï¿½lemleri
     private void Tut()
     {
         var interactPos = transform.position + facingDir;
@@ -259,11 +262,11 @@ public class PlayerController : MonoBehaviour
         {
             if (!box.GetIsCorrect() && box.CompareTag("Box"))
             {
-                //Debug.Log("Bir kutu doðru pozisyonda deðil.");
+                //Debug.Log("Bir kutu doï¿½ru pozisyonda deï¿½il.");
                 return false;
             }
         }
-        Debug.Log("Tüm kutular doðru pozisyonda.");
+        Debug.Log("Tï¿½m kutular doï¿½ru pozisyonda.");
         return true;
     }
     private bool CheckAllCandles()
@@ -287,7 +290,8 @@ public class PlayerController : MonoBehaviour
         if (collider != null)
         {
             Debug.Log("Dusmana yakalandin!");
-            //Düþmana yakalanýnca gelen arayüz.
+            //Dï¿½ï¿½mana yakalanï¿½nca gelen arayï¿½z.
+            SceneManager.LoadScene("RestartMenu");
         }
     }
 }

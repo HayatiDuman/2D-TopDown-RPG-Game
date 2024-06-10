@@ -81,7 +81,7 @@ public class DialogManager : MonoBehaviour
 
     public bool DiyalogKontrol()
     {
-        if (mevcutSatir == 0)
+        if (!dialogBox.activeSelf)
             return false;
         else
             return true;

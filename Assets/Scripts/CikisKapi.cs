@@ -13,23 +13,21 @@ public class CikisKapi : MonoBehaviour, Interactable
 
     public GameObject endingScreen;
 
+    private const string parent= "Character";
+
     public void InterfaceEtkilesim()
     {
         KapiAc();
-        if (anahtar)
-        {
-            StopCoroutine(DialogManager.Ornek.DiyalogBaslat(diyalog));
-        }else if (anahtar && kapaliKapi.activeSelf)
-        {
+        if (!anahtar)
             StartCoroutine(DialogManager.Ornek.DiyalogBaslat(diyalog));
-        }
 
     }
 
     private void KapiAc()
     {
         var varmı = key.activeSelf;
-        if (varmı)
+        PlayerController playerController = new PlayerController();
+        if (varmı && key.transform.parent == GameObject.Find("Character").transform)
             anahtar = true;
         if (anahtar)
         {

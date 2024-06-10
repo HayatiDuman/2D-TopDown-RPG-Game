@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 5f;  // Inspector'da ayarlanabilir
+    public float moveSpeed = 50f;  // Inspector'da ayarlanabilir
     private bool isMoving;
     private Vector2 input;
     private Animator animator;
@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask interactableLayer; // Etkileþim kontrolü için katman
     public LayerMask nesneLayer;
     public LayerMask boxLayer;
+    public LayerMask enemyLayer;
     private BoxCollider2D boxCollider;
 
     public Transform tempParent = null;
@@ -31,14 +32,13 @@ public class PlayerController : MonoBehaviour
     public GameObject torch;
     public CandleChecker[] candles;
     public SamdanKapi kapi;
-
+    public bool anahtarEldemi = false;
 
     private bool gorunur = false;
 
 
-
-
     public static PlayerController Ornek { get; private set; }
+
 
     private void Awake()
     {
@@ -84,35 +84,37 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
             Etkilesim();
 
-        // Nesne taþýma
-        if (Input.GetKeyDown(KeyCode.E))
+        //Nesne taþýma
+        if (basla && Input.GetKeyDown(KeyCode.E))
         {
             Tut();
             basla = false;
         }
-        //Nesen býrakma
-        if (Input.GetKeyDown(KeyCode.R))
+        //Nesne býrakma
+        if (!basla && Input.GetKeyDown(KeyCode.R))
         {
             Birak();
             basla = true;
         }
-
+        //Þamdan yakma
         if (mesaleTasiyor && Input.GetKeyDown(KeyCode.F))
         {
             MumYak();
         }
-
+        //Kutu pozisyonlarý doðruysa meþale görünür oldu.
         if (!gorunur && KutuPozisyonuKontrol())
         {
             gorunur = true;
             Debug.Log("Meþale görünür oldu.");
             torch.SetActive(true);
         }
-
+        //Þamdan odasýnýn kapýsý için þamdan kontrolleri
         if (CheckAllCandles())
         {
             kapi.KapiAc();
         }
+
+        DusmanTemas();
     }
 
     private void FixedUpdate()
@@ -190,6 +192,7 @@ public class PlayerController : MonoBehaviour
             }
             else if (collider.CompareTag("Key"))
             {
+                anahtarEldemi = true;
                 nesneTut = collider.gameObject;
                 nesneTut.transform.SetParent(GameObject.Find("Character").transform);
                 nesneTut.transform.localPosition = facingDir;
@@ -204,6 +207,7 @@ public class PlayerController : MonoBehaviour
         {
             if (nesneTut.CompareTag("Key"))
             {
+                anahtarEldemi = false;
                 nesneTut.transform.SetParent(GameObject.Find("Chest1").transform);
             }
             else if(nesneTut.CompareTag("Torch"))
@@ -241,28 +245,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public bool AnahtarEldemi()
     {
-        if (other.CompareTag("Torch"))
-        {
-            AnahtarAl(other.gameObject);
-        }
+        if (anahtarEldemi)
+            return true;
+        else
+            return false;
     }
-    private void AnahtarAl(GameObject keyObject)
-    {
-        keyObject.SetActive(false);
-        ToplananAnahtarGöster();
-    }
-    private void ToplananAnahtarGöster()
-    {
-        toplananAnahtarSayisi++;
-        keyCollectedText.text = "Toplanan Anahtar: " + toplananAnahtarSayisi.ToString();
-    }
+
     private bool KutuPozisyonuKontrol()
     {
         foreach (BoxChecker box in boxes)
         {
-            if (!box.GetIsCorrect())
+            if (!box.GetIsCorrect() && box.CompareTag("Box"))
             {
                 //Debug.Log("Bir kutu doðru pozisyonda deðil.");
                 return false;
@@ -281,5 +276,18 @@ public class PlayerController : MonoBehaviour
             }
         }
         return true;
+    }
+
+    private void DusmanTemas()
+    {
+        Vector3 boyut = boxCollider.size;
+        Vector2 offset = boxCollider.offset;
+
+        Collider2D collider = Physics2D.OverlapBox(transform.position, boyut, 0.2f, enemyLayer);
+        if (collider != null)
+        {
+            Debug.Log("Dusmana yakalandin!");
+            //Düþmana yakalanýnca gelen arayüz.
+        }
     }
 }

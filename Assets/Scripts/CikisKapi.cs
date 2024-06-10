@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class CikisKapi : MonoBehaviour, Interactable
 {
-    public GameObject kapaliKapi; // Kapalý GameObject'i
-    public GameObject acikKapi; // Açýk kapý GameObject'i
+    public GameObject kapaliKapi; // Kapalï¿½ GameObject'i
+    public GameObject acikKapi; // Aï¿½ï¿½k kapï¿½ GameObject'i
     [SerializeField] public GameObject key;
     private bool anahtar = false;
     [SerializeField] Dialog diyalog;
     public static CikisKapi Ornek { get; private set; }
+
+    public GameObject endingScreen;
 
     public void InterfaceEtkilesim()
     {
@@ -26,16 +28,16 @@ public class CikisKapi : MonoBehaviour, Interactable
 
     private void KapiAc()
     {
-        var varmý = key.activeSelf;
-        if (varmý)
+        var varmÄ± = key.activeSelf;
+        if (varmÄ±)
             anahtar = true;
         if (anahtar)
         {
-            Debug.Log("çýkýþ");
+            Debug.Log("ï¿½ï¿½kï¿½ï¿½");
             KapiDurumu();
         }
         else
-            Debug.Log("çýkýþ yapýlamýyor");
+            Debug.Log("ï¿½ï¿½kï¿½ï¿½ yapï¿½lamï¿½yor");
     }
 
     private void KapiDurumu()
@@ -46,11 +48,19 @@ public class CikisKapi : MonoBehaviour, Interactable
             acikKapi.SetActive(true);
             key.SetActive(false);
             key.transform.SetParent(GameObject.Find("Chest1").transform);
+            ShowEndingScreen();
         }
         else
         {
             kapaliKapi.SetActive(true);
             acikKapi.SetActive(false);
         }
+    }
+
+    void ShowEndingScreen()
+    {
+        Debug.Log("Showing victory screen");
+        endingScreen.SetActive(true);
+        Time.timeScale = 0f;
     }
 }

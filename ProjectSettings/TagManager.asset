@@ -8,6 +8,7 @@ TagManager:
   - Torch
   - Candle
   - Key
+  - Son
   layers:
   - Default
   - TransparentFX

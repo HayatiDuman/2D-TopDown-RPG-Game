@@ -6,7 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 50f;  // Inspector'da ayarlanabilir
+    public float moveSpeed = 8f; 
+    
+    public float defaultMoveSpeed = 8f;
     private bool isMoving;
     private Vector2 input;
     private Animator animator;
@@ -23,9 +25,7 @@ public class PlayerController : MonoBehaviour
     public bool basla = true;
 
     public Transform holdPoint;
-    public float tasimaHizi = 3f;
-    public Text keyCollectedText;
-    public int toplananAnahtarSayisi = 0;
+    public float tasimaHizi = 5f;
 
     private GameObject nesneTut = null;
     private bool mesaleTasiyor = false;
@@ -39,8 +39,6 @@ public class PlayerController : MonoBehaviour
 
 
     public static PlayerController Ornek { get; private set; }
-
-    public GameObject restartScreen;
 
 
     private void Awake()
@@ -188,7 +186,7 @@ public class PlayerController : MonoBehaviour
             {
                 nesneTut = collider.gameObject;
                 nesneTut.transform.SetParent(GameObject.Find("Character").transform);
-                nesneTut.transform.localPosition = facingDir;
+                nesneTut.transform.localPosition = facingDir * 2;
 
                 mesaleTasiyor = true;
                 break;
@@ -198,7 +196,7 @@ public class PlayerController : MonoBehaviour
                 anahtarEldemi = true;
                 nesneTut = collider.gameObject;
                 nesneTut.transform.SetParent(GameObject.Find("Character").transform);
-                nesneTut.transform.localPosition = facingDir;
+                nesneTut.transform.localPosition = facingDir * 2;
 
                 break;
             }
@@ -216,14 +214,14 @@ public class PlayerController : MonoBehaviour
             else if(nesneTut.CompareTag("Torch"))
             {
                 nesneTut.transform.SetParent(GameObject.Find("Platform").transform);
-                moveSpeed = 5f;
+                moveSpeed = defaultMoveSpeed;
                 mesaleTasiyor = false;
             }
             else
             {
                 nesneTut.transform.SetParent(GameObject.Find("Platform").transform);
                 nesneTut.layer = 9;
-                moveSpeed = 5f;
+                moveSpeed = defaultMoveSpeed;
                 mesaleTasiyor = false;
             }
 
